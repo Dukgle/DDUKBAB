@@ -1,5 +1,3 @@
-// index.js
-
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -19,16 +17,15 @@ const saler_page = require("./routes/saler/saler_page");
 const saler_change = require("./routes/saler/saler_change");
 const saler_menu = require("./routes/saler/menu");
 
-// const image = require('./image');
-
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // Body 파서 설정
 app.use(bodyParser.json());
-app.use(cookieParser());
-// CORS 설정
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// CORS 설정
 app.use(cors());
 
 // API 라우트 추가
@@ -44,8 +41,6 @@ app.use("/api/users/order", order); // 많은 수량으로 인해 자동적으�
 app.use("/api/salers", saler_menu);
 app.use("/api/salers", saler_page);
 app.use("/api/salers", saler_change);
-
-// app.use('/image', image);
 
 // 서버 시작
 app.listen(port, () => {
