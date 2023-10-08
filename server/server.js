@@ -27,9 +27,9 @@ const port = 5000;
 
 // Body 파서 설정
 app.use(bodyParser.json());
-app.use(cookieParser())
+app.use(cookieParser());
 // CORS 설정
-app.use(bodyParser.urlencoded({ extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // API 라우트 추가
@@ -54,4 +54,4 @@ app.listen(port, () => {
   console.log(`서버가 포트 ${port}에서 실행 중입니다.`);
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
