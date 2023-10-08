@@ -7,6 +7,6 @@ const dbHeroku = {
   password: process.env.DB_PASSWORD,
 };
 
-const dbH = mysql.createConnection(Heroku);
+const db = mysql.createConnection(dbHeroku);
 
-module.exports = dbH;
+module.exports = db;
