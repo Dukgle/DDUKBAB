@@ -1,20 +1,11 @@
 // routes/userRoutes.js
-const mysql = require("mysql2");
-
-const dbConfig = {
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-};
-
 const express = require("express");
 const router = express.Router();
 const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const db = mysql.createConnection(dbConfig);
+const db = require("../dbHeroku");
 
 // 회원가입 API 엔드포인트
 router.post("/signup", (req, res) => {
