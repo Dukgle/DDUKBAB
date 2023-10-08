@@ -6,7 +6,7 @@ const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const db = require("/app/server/config/dbConfig");
+const db = require("../config/dbConfig");
 
 // 회원가입 API 엔드포인트
 router.post("/signup", (req, res) => {
