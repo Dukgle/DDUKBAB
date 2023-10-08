@@ -19,7 +19,7 @@ const saler_change = require("./routes/saler/saler_change");
 const saler_menu = require("./routes/saler/menu");
 
 const app = express();
-const port = process.env.PORT || 5000;
+// const port = process.env.PORT || 5000;
 
 // Body 파서 설정
 app.use(bodyParser.json());
@@ -44,8 +44,8 @@ app.use("/api/salers", saler_page);
 app.use("/api/salers", saler_change);
 
 // 서버 시작
-app.listen(port, () => {
-  console.log(`서버가 포트 ${port}에서 실행 중입니다.`);
+app.listen(process.env.PORT, () => {
+  console.log(`서버가 포트 ${process.env.PORT}에서 실행 중입니다.`);
 });
 
 app.use(express.static(path.join(__dirname, "public")));
