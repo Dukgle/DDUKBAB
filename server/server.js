@@ -1,53 +1,46 @@
-// index.js
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const cookieParser = require('cookie-parser')
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const users = require("./routes/users");
+const posts = require("./routes/posts");
+const my_page = require("./routes/my_page");
+const seat_reserve = require("./routes/seat_reserve");
+const user_change = require("./routes/user_change");
+const bookmark = require("./routes/bookmark");
+const shopping = require("./routes/shopping");
+const order = require("./routes/order");
 
-const bodyParser = require('body-parser');
-const users = require('./routes/users');
-const posts = require('./routes/posts');
-const my_page = require('./routes/my_page')
-const seat_reserve = require('./routes/seat_reserve')
-const user_change = require('./routes/user_change')
-const bookmark = require('./routes/bookmark');
-const shopping = require('./routes/shopping')
-const order = require('./routes/order')
-const point_charge = require('./routes/point_charge');
-
-const saler_page = require('./routes/saler/saler_page')
-const saler_change = require('./routes/saler/saler_change')
-const saler_menu = require('./routes/saler/menu')
-
-// const image = require('./image');
+const saler_page = require("./routes/saler/saler_page");
+const saler_change = require("./routes/saler/saler_change");
+const saler_menu = require("./routes/saler/menu");
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // Body 파서 설정
 app.use(bodyParser.json());
-app.use(cookieParser());
-// CORS 설정
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// CORS 설정
 app.use(cors());
 
 // API 라우트 추가
-app.use('/api', users);
-app.use('/api/users', user_change);
-app.use('/api/users', my_page);
-app.use('/api/users/reservation', seat_reserve);
-app.use('/api/users/posts', posts);
-app.use('/api/users/bookmarks', bookmark);
-app.use('/api/users/shopping', shopping);
-app.use('/api/users/order', order); // 많은 수량으로 인해 자동적으로 품절 처리 ? 가능하면 구현
-app.use('/api/users', point_charge);
+app.use("/api", users);
+app.use("/api/users", user_change);
+app.use("/api/users", my_page);
+app.use("/api/users/reservation", seat_reserve);
+app.use("/api/users/posts", posts);
+app.use("/api/users/bookmarks", bookmark);
+app.use("/api/users/shopping", shopping);
+app.use("/api/users/order", order); // 많은 수량으로 인해 자동적으로 품절 처리 ? 가능하면 구현
 
-app.use('/api/salers', saler_menu)
-app.use('/api/salers', saler_page);
-app.use('/api/salers', saler_change);
-
-// app.use('/image', image);
+app.use("/api/salers", saler_menu);
+app.use("/api/salers", saler_page);
+app.use("/api/salers", saler_change);
 
 // 서버 시작
 app.listen(port, () => {
