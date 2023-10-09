@@ -36,7 +36,7 @@ pool.getConnection((err, connection) => {
   }
 
   // 연결을 사용하여 쿼리 실행
-  connection.query("SELECT * FROM ${tableName}", (queryErr, results, fields) => {
+  connection.query(`SELECT * FROM ${tableName}`, (queryErr, results, fields) => {
     // 결과 처리
     console.log(results);
 
