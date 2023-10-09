@@ -43,6 +43,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "https://ddukbab-160bd6fc13f3.herokuapp.com/",
   "eslintConfig": {
     "extends": [
       "react-app",
