@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const path = require("path");
 const { pool, select } = require(path.join(__dirname, "../../dbHeroku"));
 
 // 이름, 닉네임 조회
