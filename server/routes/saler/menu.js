@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const { pool, select } = require(path.join(__dirname, "../../dbHeroku"));
 
 function verifyToken(req, res, next) {
