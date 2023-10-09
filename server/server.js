@@ -26,7 +26,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // CORS 설정
-app.use(cors());
+const corsOptions = {
+  origin: "https://ddukbab.netlify.app",
+  optionsSuccessStatus: 200, // 일부 오래된 브라우저들을 위한 옵션
+};
+
+app.use(cors(corsOptions));
 
 // API 라우트 추가
 app.use("/api", users);
