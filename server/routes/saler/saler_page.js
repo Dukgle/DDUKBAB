@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 // 이름, 닉네임 조회
 router.get("/:salerId/saler-page/info", (req, res) => {
@@ -8,7 +8,7 @@ router.get("/:salerId/saler-page/info", (req, res) => {
 
   const query = `SELECT username, nickname FROM salers WHERE saler_id = ?`;
 
-  db.query(query, [salerId], (err, result) => {
+  pool.query(query, [salerId], (err, result) => {
     if (err) {
       console.error("마이페이지 조회 오류:", err);
       res.status(500).json({ error: "마이페이지 조회 실패" });

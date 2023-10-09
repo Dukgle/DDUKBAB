@@ -3,7 +3,7 @@ const router = express.Router();
 const Iamport = require("iamport");
 const bcrypt = require("bcrypt");
 const port = process.env.PORT || 3000; // 포트 설정 (3000 포트를 사용하거나 환경 변수로 지정 가능)
-const db = require("../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 function verifyToken(req, res, next) {
   // 헤더에서 인증 토큰을 추출
@@ -79,7 +79,7 @@ router.put("/mypage/charge-point", verifyToken, (req, res) => {
       // 사용자의 point 업데이트
       const updatePointQuery = `UPDATE users SET point = point + ? WHERE user_id = ?`;
 
-      db.query(updatePointQuery, [amount, userId], (updateErr, result) => {
+      pool.query(updatePointQuery, [amount, userId], (updateErr, result) => {
         if (updateErr) {
           console.error("데이터베이스 오류:", updateErr);
           res.status(500).json({ error: "데이터베이스 오류" });

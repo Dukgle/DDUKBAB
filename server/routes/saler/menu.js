@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const db = require("../../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 function verifyToken(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
@@ -45,7 +45,7 @@ router.get("/sold-out/:menuName", verifyToken, (req, res) => {
 
   const query = `SELECT out_of_stock FROM menu WHERE menu_name = ?`;
 
-  db.query(query, [menuName], (err, result) => {
+  pool.query(query, [menuName], (err, result) => {
     if (err) {
       console.error("품절 확인 오류:", err);
       res.status(500).json({ error: "품절 확인 실패" });
@@ -76,7 +76,7 @@ router.put("/sold-out", verifyToken, (req, res) => {
   // }
 
   const query = `UPDATE menu SET out_of_stock = ? WHERE menu_name = ?`;
-  db.query(query, [out_of_stock, menu_name], (err, result) => {
+  pool.query(query, [out_of_stock, menu_name], (err, result) => {
     if (err) {
       console.error("품절 처리 오류:", err);
       res.status(500).json({ error: "품절 처리 실패" });

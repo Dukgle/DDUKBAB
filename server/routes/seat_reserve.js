@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
-const db = require("../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 function verifyToken(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
@@ -56,7 +56,7 @@ router.get("/get/:reservationId", verifyToken, (req, res) => {
 
   const query = `SELECT seat_name, reservation_datetime FROM reservations WHERE reservation_id = ? AND user_id = ?`;
 
-  db.query(query, [reservationId, userId], (err, result) => {
+  pool.query(query, [reservationId, userId], (err, result) => {
     if (err) {
       console.error("예약 정보 조회 오류:", err);
       res.status(500).json({ error: "예약 정보 조회 실패" });
@@ -85,7 +85,7 @@ router.get("/get/:reservationId", verifyToken, (req, res) => {
 
       const updateStatusQuery = `UPDATE seats SET status='available' WHERE seat_name=?`;
 
-      db.query(updateStatusQuery, [seat_name], (err, updateResult) => {
+      pool.query(updateStatusQuery, [seat_name], (err, updateResult) => {
         if (err) {
           console.error("좌석 상태 업데이트 오류:", err);
           res.status(500).json({ error: "좌석 상태 업데이트 실패" });
@@ -117,7 +117,7 @@ router.post("/reserve", verifyToken, (req, res) => {
   const reserveQuery = `INSERT INTO reservations (user_id, seat_name, reservation_datetime) VALUES (?, ?, ?)`;
   const updateSeatStatusQuery = `UPDATE seats SET status='reserved' WHERE seat_name=?`;
 
-  db.beginTransaction((err) => {
+  pool.beginTransaction((err) => {
     if (err) {
       console.error("트랜잭션 시작 오류:", err);
       res.status(500).json({ error: "자리 예약 실패" });
@@ -125,9 +125,9 @@ router.post("/reserve", verifyToken, (req, res) => {
     }
 
     // 자리 예약
-    db.query(reserveQuery, [userId, seat_name, reservationDatetime], (err, result) => {
+    pool.query(reserveQuery, [userId, seat_name, reservationDatetime], (err, result) => {
       if (err) {
-        db.rollback(() => {
+        pool.rollback(() => {
           console.error("자리 예약 오류:", err);
           res.status(500).json({ error: "자리 예약 실패" });
         });
@@ -135,18 +135,18 @@ router.post("/reserve", verifyToken, (req, res) => {
       }
 
       // 자리 상태 업데이트
-      db.query(updateSeatStatusQuery, [seat_name], (err, result) => {
+      pool.query(updateSeatStatusQuery, [seat_name], (err, result) => {
         if (err) {
-          db.rollback(() => {
+          pool.rollback(() => {
             console.error("자리 상태 업데이트 오류:", err);
             res.status(500).json({ error: "자리 예약 실패" });
           });
           return;
         }
 
-        db.commit((err) => {
+        pool.commit((err) => {
           if (err) {
-            db.rollback(() => {
+            pool.rollback(() => {
               console.error("트랜잭션 커밋 오류:", err);
               res.status(500).json({ error: "자리 예약 실패" });
             });
@@ -168,7 +168,7 @@ router.delete("/cancel/:reservationId", verifyToken, (req, res) => {
 
   const getSeatNameQuery = `SELECT seat_name FROM reservations WHERE reservation_id=?`;
 
-  db.query(getSeatNameQuery, [reservationId], (err, result) => {
+  pool.query(getSeatNameQuery, [reservationId], (err, result) => {
     if (err) {
       console.error("예약 정보 조회 오류:", err);
       res.status(500).json({ error: "자리 예약 취소 실패" });
@@ -185,7 +185,7 @@ router.delete("/cancel/:reservationId", verifyToken, (req, res) => {
     // 예약을 찾았으므로 자리 상태를 'available'로 업데이트
     const updateSeatStatusQuery = `UPDATE seats SET status='available' WHERE seat_name=?`;
 
-    db.beginTransaction((err) => {
+    pool.beginTransaction((err) => {
       if (err) {
         console.error("트랜잭션 시작 오류:", err);
         res.status(500).json({ error: "자리 예약 취소 실패" });
@@ -195,9 +195,9 @@ router.delete("/cancel/:reservationId", verifyToken, (req, res) => {
       // 예약 취소
       const cancelQuery = `DELETE FROM reservations WHERE reservation_id=? AND user_id=?`;
 
-      db.query(cancelQuery, [reservationId, userId], (err, result) => {
+      pool.query(cancelQuery, [reservationId, userId], (err, result) => {
         if (err) {
-          db.rollback(() => {
+          pool.rollback(() => {
             console.error("자리 예약 취소 오류:", err);
             res.status(500).json({ error: "자리 예약 취소 실패" });
           });
@@ -206,7 +206,7 @@ router.delete("/cancel/:reservationId", verifyToken, (req, res) => {
 
         if (result.affectedRows === 0) {
           // 아무 예약도 삭제되지 않았을 경우 취소 실패로 처리
-          db.rollback(() => {
+          pool.rollback(() => {
             console.error("자리 예약 취소 실패: 해당 예약을 찾을 수 없습니다");
             res.status(400).json({ error: "자리 예약 취소 실패: 해당 예약을 찾을 수 없습니다" });
           });
@@ -214,18 +214,18 @@ router.delete("/cancel/:reservationId", verifyToken, (req, res) => {
         }
 
         // 자리 상태 업데이트
-        db.query(updateSeatStatusQuery, [seatName], (err, result) => {
+        pool.query(updateSeatStatusQuery, [seatName], (err, result) => {
           if (err) {
-            db.rollback(() => {
+            pool.rollback(() => {
               console.error("자리 상태 업데이트 오류:", err);
               res.status(500).json({ error: "자리 예약 취소 실패" });
             });
             return;
           }
 
-          db.commit((err) => {
+          pool.commit((err) => {
             if (err) {
-              db.rollback(() => {
+              pool.rollback(() => {
                 console.error("트랜잭션 커밋 오류:", err);
                 res.status(500).json({ error: "자리 예약 취소 실패" });
               });

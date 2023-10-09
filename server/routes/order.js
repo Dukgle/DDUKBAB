@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const db = require("../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 function verifyToken(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
@@ -28,7 +28,7 @@ router.get("/order-num", verifyToken, (req, res) => {
 
   const query = `SELECT id FROM orders WHERE user_id = ? and DATE_FORMAT(created_at, '%Y-%m-%d' ) = ?`;
 
-  db.query(query, [userId, createdAt], (err, result) => {
+  pool.query(query, [userId, createdAt], (err, result) => {
     if (err) {
       console.error("번호표 조회 오류:", err);
       res.status(500).json({ error: "번호표 조회 실패" });

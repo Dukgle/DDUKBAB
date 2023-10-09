@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const db = require("../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 function verifyToken(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
@@ -34,7 +34,7 @@ router.get("/order-get", verifyToken, (req, res) => {
                     GROUP BY m.store_name;
 `;
 
-  db.query(query, [userId], (err, result) => {
+  pool.query(query, [userId], (err, result) => {
     if (err) {
       console.error("장바구니 조회 오류:", err);
       res.status(500).json({ error: "장바구니 조회 실패" });
@@ -57,7 +57,7 @@ router.get("/order-check", verifyToken, (req, res) => {
     JOIN menu m ON s.menu_name = m.menu_name WHERE s.user_id = ?
     `;
 
-  db.query(query, [userId], (err, result) => {
+  pool.query(query, [userId], (err, result) => {
     if (err) {
       console.error("주문 조회 오류:", err);
       res.status(500).json({ error: "주문 조회 실패" });
@@ -76,7 +76,7 @@ router.get("/order-check", verifyToken, (req, res) => {
 
     const ordersQuery = `INSERT INTO orders (user_id, total_price, created_at) VALUES (?,?,?)`;
     const createdAt = new Date();
-    db.query(ordersQuery, [userId, totalOrderAmount, createdAt], (err, result) => {
+    pool.query(ordersQuery, [userId, totalOrderAmount, createdAt], (err, result) => {
       if (err) {
         console.error("주문 전달 오류:", err);
         res.status(500).json({ error: "주문 전달 실패" });
@@ -99,7 +99,7 @@ router.post("/order-select", verifyToken, (req, res) => {
   // 해당 사용자의 장바구니에 이미 동일한 메뉴가 있는지 확인
   const checkDuplicateQuery = `SELECT * FROM shopping WHERE user_id = ? AND menu_name = ?`;
 
-  db.query(checkDuplicateQuery, [userId, menu_name], (err, duplicateResult) => {
+  pool.query(checkDuplicateQuery, [userId, menu_name], (err, duplicateResult) => {
     if (err) {
       console.error("중복 확인 오류:", err);
       res.status(500).json({ error: "중복 확인 실패" });
@@ -115,7 +115,7 @@ router.post("/order-select", verifyToken, (req, res) => {
 
     const getMenuPriceQuery = `SELECT price FROM menu WHERE menu_name = ?`;
 
-    db.query(getMenuPriceQuery, [menu_name], (err, menuResult) => {
+    pool.query(getMenuPriceQuery, [menu_name], (err, menuResult) => {
       if (err) {
         console.error("가격 조회 오류:", err);
         res.status(500).json({ error: "가격 조회 실패" });
@@ -133,7 +133,7 @@ router.post("/order-select", verifyToken, (req, res) => {
 
       const query = `INSERT INTO shopping (user_id, menu_name, amount, total_price) VALUES (?,?,?,?)`;
 
-      db.query(query, [userId, menu_name, amount, menuPrice * amount], (err, result) => {
+      pool.query(query, [userId, menu_name, amount, menuPrice * amount], (err, result) => {
         if (err) {
           console.error("장바구니 등록 오류:", err);
           res.status(500).json({ error: "장바구니 등록 실패" });
@@ -153,7 +153,7 @@ router.delete("/order-delete/:id", verifyToken, (req, res) => {
 
   const query = `DELETE FROM shopping WHERE id=? AND user_id=?`;
 
-  db.query(query, [id, userId], (err, result) => {
+  pool.query(query, [id, userId], (err, result) => {
     // query에 넣어줄 값을 순서대로 리스트 안에 작성해줘야한다.
     if (err) {
       console.error("장바구니 삭제 오류:", err);
