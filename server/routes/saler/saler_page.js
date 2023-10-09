@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
-const { pool, select } = require(path.join(__dirname, "../../dbHeroku"));
+const { pool, select } = require("../../dbHeroku");
 
 // 이름, 닉네임 조회
 router.get("/:salerId/saler-page/info", (req, res) => {
