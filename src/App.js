@@ -1,7 +1,3 @@
-import "./App.css";
-import styled from "styled-components";
-import React, { useState } from "react";
-import { BrowserRouter, Route, Routes, Switch, Link, RouterProvider } from "react-router-dom";
 import axios from "axios";
 
 const instance = axios.create({
@@ -9,6 +5,11 @@ const instance = axios.create({
 });
 
 window.api = instance;
+
+import "./App.css";
+import styled from "styled-components";
+import React, { useState } from "react";
+import { BrowserRouter, Route, Routes, Switch, Link, RouterProvider } from "react-router-dom";
 
 import Splash from "./verification/Splash";
 import Login from "./verification/Login";
