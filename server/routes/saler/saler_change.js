@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
-const { pool, select } = require(path.join(__dirname, "../../dbHeroku"));
+const { pool, select } = require("../../dbHeroku");
 
 router.put("/:salerId/nickname-update", (req, res) => {
   const salerId = req.params.salerId;
