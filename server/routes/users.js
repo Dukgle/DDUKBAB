@@ -5,7 +5,7 @@ const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const db = require("../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 // 회원가입 API 엔드포인트
 router.post("/signup", (req, res) => {
@@ -29,7 +29,7 @@ router.post("/signup", (req, res) => {
 
     // 해싱된 비밀번호를 데이터베이스에 저장
     const query = `INSERT INTO ${tableName} (username, uni_num, nickname, password, role, created_at) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.query(query, [username, uni_num, nickname, hash, role, created_at], (err, result) => {
+    pool.query(query, [username, uni_num, nickname, hash, role, created_at], (err, result) => {
       if (err) {
         console.error("회원가입 오류:", err);
         res.status(500).json({ error: "회원가입 실패" });
@@ -52,7 +52,7 @@ router.post("/login", (req, res) => {
 
   // 사용자 정보 조회 (uni_num을 통해 저장된 해싱된 비밀번호와 role을 가져옴)
   const query = `SELECT ${id}, uni_num, password, role FROM ${tableName} WHERE uni_num = ?`;
-  db.query(query, [uni_num], (err, rows) => {
+  pool.query(query, [uni_num], (err, rows) => {
     if (err) {
       console.error("로그인 오류:", err);
       res.status(500).json({ error: "로그인 실패" });

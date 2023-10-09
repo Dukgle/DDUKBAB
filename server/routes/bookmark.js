@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const db = require("../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 function verifyToken(req, res, next) {
   // 헤더에서 인증 토큰을 추출
@@ -30,7 +30,7 @@ router.get("/get", verifyToken, (req, res) => {
 
   const query = `SELECT * FROM bookmarks WHERE user_id = ?`;
 
-  db.query(query, [userId], (err, result) => {
+  pool.query(query, [userId], (err, result) => {
     if (err) {
       console.error("즐겨찾기 조회 오류:", err);
       res.status(500).json({ error: "즐겨찾기 조회 실패" });
@@ -50,7 +50,7 @@ router.post("/create", verifyToken, (req, res) => {
 
   const query = `INSERT INTO bookmarks (user_id, menu_name ) VALUES (?,?)`;
 
-  db.query(query, [userId, menu_name], (err, result) => {
+  pool.query(query, [userId, menu_name], (err, result) => {
     if (err) {
       console.error("즐겨찾기 오류:", err);
       res.status(500).json({ error: "즐겨찾기 실패" });
@@ -68,7 +68,7 @@ router.delete("/delete/:bookmarkId", verifyToken, (req, res) => {
 
   const query = `DELETE FROM bookmarks WHERE bookmark_id=? AND user_id=?`;
 
-  db.query(query, [bookmarkId, userId], (err, result) => {
+  pool.query(query, [bookmarkId, userId], (err, result) => {
     if (err) {
       console.error("즐겨찾기 삭제 오류:", err);
       res.status(500).json({ error: "즐겨찾기 삭제 실패" });

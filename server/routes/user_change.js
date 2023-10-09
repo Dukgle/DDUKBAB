@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const db = require("../dbHeroku");
+const { pool, select } = require("../dbHeroku");
 
 function verifyToken(req, res, next) {
   // 헤더에서 인증 토큰을 추출
@@ -32,7 +32,7 @@ router.put("/nickname-update", verifyToken, (req, res) => {
   const { nickname } = req.body;
 
   const query = `UPDATE users SET nickname=? WHERE user_id= ?`;
-  db.query(query, [nickname, userId], (err, result) => {
+  pool.query(query, [nickname, userId], (err, result) => {
     if (err) {
       console.error("닉네임 업데이트 오류:", err);
       res.status(500).json({ error: "닉네임 업데이트 실패" });
@@ -45,7 +45,7 @@ router.get("/users-info", verifyToken, (req, res) => {
   const userId = req.userId;
   const query = `SELECT username, point, uni_num, role, nickname FROM users WHERE user_id = ?`;
 
-  db.query(query, [userId], (err, result) => {
+  pool.query(query, [userId], (err, result) => {
     if (err) {
       console.error("정보 조회 오류:", err);
       res.status(500).json({ error: "정보 조회 실패" });

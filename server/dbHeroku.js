@@ -29,25 +29,34 @@ const pool = mysql.createPool({
 });
 
 // 연결 풀에서 연결 가져오기
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.error("Error getting MySQL connection from pool:", err);
-    return;
-  }
-
-  // 연결을 사용하여 쿼리 실행
-  connection.query(`SELECT * FROM ${tableName}`, (queryErr, results, fields) => {
-    // 결과 처리
-    console.log(results);
-
-    // 연결 반환
-    connection.release();
-
-    // 에러 처리
-    if (queryErr) {
-      console.error("Error executing query:", queryErr);
+function select(tableName, callback) {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error("Error getting MySQL connection from pool:", err);
+      return callback(err, null);
     }
-  });
-});
 
-module.exports = pool;
+    // 연결을 사용하여 쿼리 실행
+    connection.query(`SELECT * FROM ${tableName}`, (queryErr, results, fields) => {
+      // 결과 처리
+      console.log(results);
+
+      // 연결 반환
+      connection.release();
+
+      // 에러 처리
+      if (queryErr) {
+        console.error("Error executing query:", queryErr);
+        return callback(queryErr, null);
+      }
+
+      // 쿼리 결과를 콜백으로 전달
+      callback(null, results);
+    });
+  });
+}
+
+module.exports = {
+  pool: pool,
+  select: select,
+};
