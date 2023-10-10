@@ -1,3 +1,4 @@
+/*
 import cors from "koa2-cors";
 
 const express = require("express");
@@ -57,3 +58,63 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use(express.static(path.join(__dirname, "public")));
+*/
+
+import Koa from "koa";
+import bodyParser from "koa-bodyparser";
+import cookieParser from "cookie-parser";
+import cors from "koa2-cors";
+import serve from "koa-static";
+import path from "path";
+
+// 라우트 모듈들 import
+import users from "./routes/users";
+import posts from "./routes/posts";
+import my_page from "./routes/my_page";
+import seat_reserve from "./routes/seat_reserve";
+import user_change from "./routes/user_change";
+import bookmark from "./routes/bookmark";
+import shopping from "./routes/shopping";
+import order from "./routes/order";
+import saler_page from "./routes/saler/saler_page";
+import saler_change from "./routes/saler/saler_change";
+import saler_menu from "./routes/saler/menu";
+
+const app = new Koa();
+
+// Body 파서 설정
+app.use(bodyParser());
+app.use(cookieParser());
+
+// CORS 설정
+app.use(
+  cors({
+    origin: "https://ddukbab.netlify.app",
+    credentials: true,
+    allowMethods: ["GET", "POST", "PUT", "DELETE"],
+    allowHeaders: ["Content-Type", "Authorization", "Accept"],
+  })
+);
+
+// API 라우트 추가
+app.use(users.routes());
+app.use(user_change.routes());
+app.use(my_page.routes());
+app.use(seat_reserve.routes());
+app.use(posts.routes());
+app.use(bookmark.routes());
+app.use(shopping.routes());
+app.use(order.routes());
+
+app.use(saler_menu.routes());
+app.use(saler_page.routes());
+app.use(saler_change.routes());
+
+// 정적 파일 서빙
+app.use(serve(path.join(__dirname, "public")));
+
+// 서버 시작
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`);
+});
