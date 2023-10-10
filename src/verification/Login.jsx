@@ -23,7 +23,7 @@ function Login() {
   const Login = async (e) => {
     try {
       const response = await axios.post(
-        "/api/login",
+        "/login",
         {
           uni_num: number,
           password: password,
