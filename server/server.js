@@ -89,7 +89,7 @@ app.use(cookieParser());
 // CORS 설정
 app.use(
   cors({
-    origin: "https://ddukbab.netlify.app",
+    origin: ["https://ddukbab.netlify.app", "https://ddukbab-160bd6fc13f3.herokuapp.com"],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization,Accept",
@@ -101,7 +101,7 @@ app.use(
 // 프리플라이트 요청에 대한 응답을 처리하기 위한 미들웨어 추가
 app.options("*", (req, res) => {
   res.set({
-    "Access-Control-Allow-Origin": "https://ddukbab.netlify.app",
+    "Access-Control-Allow-Origin": ["https://ddukbab.netlify.app", "https://ddukbab-160bd6fc13f3.herokuapp.com"],
     "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "Access-Control-Allow-Headers": "Content-Type,Authorization,Accept",
     "Access-Control-Allow-Credentials": true,
