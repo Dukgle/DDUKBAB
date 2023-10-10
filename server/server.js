@@ -91,12 +91,23 @@ app.use(
   cors({
     origin: "https://ddukbab.netlify.app",
     credentials: true,
-    optionsSuccessStatus: 200,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type,Authorization,Accept",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
 // 프리플라이트 요청에 대한 응답을 처리하기 위한 미들웨어 추가
-app.options("*", cors());
+app.options("*", (req, res) => {
+  res.set({
+    "Access-Control-Allow-Origin": "https://ddukbab.netlify.app",
+    "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "Access-Control-Allow-Headers": "Content-Type,Authorization,Accept",
+    "Access-Control-Allow-Credentials": true,
+  });
+  res.status(204).end();
+});
 
 // API 라우트 추가
 app.use("/api", users);
