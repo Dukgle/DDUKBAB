@@ -13,9 +13,9 @@ function ReviewMain() {
 
     // 리뷰 목록 상태 추가
     const [reviews, setReviews] = useState([
-        { id: 1, title: '무난하게 맛있음', name: '학식마스터', content: '무난하게 맛있음 다음에는 다른 메뉴도 먹어봐야겠음', starRating: 4.5 , type: '파스타', menu: '알리오올리오'},
-        { id: 2, title: '맛있다옹', name: '미돼고지', content: '맛있다옹', starRating: 5.0, type: '군산카츠', menu: '돈카츠덮밥'},
-        { id: 3, title: '좀 짰어요 그래도 맛은 있음', name: '나는아직배고프다', content: '좀 짰어요 그래도 맛은 있음', starRating: 4.0, type: '오늘의메뉴A', menu: '오늘의메뉴A'}
+        { id: 1, title: '무난하게 맛있음', name: '학식마스터', content: '무난하게 맛있음 다음에는 다른 메뉴도 먹어봐야겠음', starRating: 4.5 , type: '파스타', menu: '알리오올리오', time: '1시간 전'},
+        { id: 2, title: '맛있다옹', name: '미돼고지', content: '맛있다옹', starRating: 5.0, type: '군산카츠', menu: '돈카츠덮밥', time: '2시간 전'},
+        { id: 3, title: '좀 짰어요 그래도 맛은 있음', name: '나는아직배고프다', content: '좀 짰어요 그래도 맛은 있음', starRating: 4.0, type: '오늘의메뉴A', menu: '오늘의메뉴A', time: '3시간 전'}
     ]);
 
     const typeOptions1 = [
@@ -122,8 +122,9 @@ function ReviewMain() {
                 {reviews.map((review) => (
                     <Link to={`/review/${review.id}`} key={review.id}>
                         <div className="review-item">
-                            <h3>{review.name}</h3>
+                            <h3>{review.name}</h3> 
                             <p>{review.content}</p>
+                            <p>{review.time}</p>
                             <div className="star-rating">
                                 <img src={star} alt="Star" />
                                 <span>{review.starRating}</span>

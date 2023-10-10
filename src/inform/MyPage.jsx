@@ -73,7 +73,7 @@ function MyPage() {
         </div>
 
         <div className="pay-logout">
-          <Link to="/mypage/point">
+          <Link to="/mypage/charge/point">
             <button className="pay-btn">포인트 충천하기</button>
           </Link>
           <Link to="/">
@@ -136,7 +136,7 @@ function MyPage() {
         </div>
         <div className="my-review">
           <div className="name-title">내 후기</div>
-          <Link to="/#">
+          <Link to="/myreview">
             <button className="name-box-2">
               <p>내 후기 확인하러 가기</p>
               <img src={linkImg} alt="link" />
