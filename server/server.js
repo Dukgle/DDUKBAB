@@ -96,6 +96,17 @@ app.use(
   })
 );
 
+// OPTIONS 요청에 대한 응답 처리
+app.use(async (ctx, next) => {
+  if (ctx.request.method === "OPTIONS") {
+    ctx.response.status = 200;
+    ctx.response.set("Access-Control-Allow-Origin", "https://ddukbab.netlify.app");
+    ctx.response.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    ctx.response.set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept");
+  }
+  await next();
+});
+
 // API 라우트 추가
 app.use(users.routes());
 app.use(user_change.routes());
