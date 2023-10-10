@@ -35,13 +35,19 @@ function SignUp() {
     // e.preventDefault(); // 폼 제출 기본 동작을 막습니다.
 
     try {
-      const response = await axios.post("https://your-heroku-app.herokuapp.com/api/signup", {
-        username: name,
-        uni_num: number,
-        nickname: username,
-        password: password,
-        role: selectedRole,
-      });
+      const response = await axios.post(
+        "https://your-heroku-app.herokuapp.com/api/signup",
+        {
+          username: name,
+          uni_num: number,
+          nickname: username,
+          password: password,
+          role: selectedRole,
+        },
+        {
+          mode: "cors",
+        }
+      );
       console.log("회원가입 성공", response.data);
       // 회원가입 성공 후 다른 작업 수행
       // 예: 회원가입 성공 메시지 표시, 로그인 페이지로 리다이렉트 등
