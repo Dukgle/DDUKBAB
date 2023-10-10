@@ -1,0 +1,43 @@
+.my-review-list {
+    display: flex;
+    flex-direction: column; /* 리뷰 세로로 나열 */
+    gap: 10px;
+}
+
+.my-review-item {
+    position: relative;
+    width: 90%;
+    padding-left: 15px;
+    border: 1px solid #43000A;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.my-review-item h3 {
+    position: relative;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.my-review-item p {
+    font-size: 18px;
+    color: #000000;
+}
+
+
+.my-star-rating img {
+    position: relative;
+    top: 0; 
+    width: 20px;
+}
+
+
+.my-star-rating span {
+    position: relative;
+    top: 0; 
+    margin-bottom: 20px;
+    margin-left: 7px; 
+    font-weight: 600; 
+}

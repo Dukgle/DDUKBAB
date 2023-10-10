@@ -17,7 +17,7 @@ function Qr() {
     return (
         <>
             <button className="qr-button" onClick={openModal}>
-                <img src={QrIcon} alt="QR Code" />
+                <img src={QrIcon} className='header-qr-button-icon' alt="QR Code" />
             </button>
             <CustomModal // CustomModal 컴포넌트 사용
                 isOpen={modalIsOpen}

@@ -38,7 +38,7 @@ function Header_option({ logoText }) {
             <div className="cart">
               <div className="cart-button">
                 <Link to="/cart">
-                  <img src={CartIcon} alt="Cart" />
+                  <img src={CartIcon} className="header-cart-button-icon" alt="Cart" />
                 </Link>
               </div>
             </div>
@@ -47,7 +47,7 @@ function Header_option({ logoText }) {
             </div>
             <div className="list" onBlur={handleBlurContainer}>
               <button className="list-button" onClick={handleClickContainer}>
-                <img src={ListIcon} alt="List" />
+                <img src={ListIcon} className="header-list-button-icon" alt="List" />
                 {isDropdownView && <Dropdown />}
               </button>
             </div>

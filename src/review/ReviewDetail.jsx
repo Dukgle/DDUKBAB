@@ -19,9 +19,9 @@ function ReviewDetail() {
 
   // 리뷰 목록 하드코딩
   const reviews = [
-    { id: 1, title: "무난하게 맛있음", name: "학식마스터", content: "무난하게 맛있음 다음에는 다른 메뉴도 먹어봐야겠음", starRating: 4.5, type: "파스타", menu: "알리오올리오" },
-    { id: 2, title: "맛있다옹", name: "미돼고지", content: "맛있다옹", starRating: 3.0, type: "군산카츠", menu: "돈카츠덮밥" },
-    { id: 3, title: "좀 짰어요 그래도 맛은 있음", name: "나는아직배고프다", content: "좀 짰어요 그래도 맛은 있음", starRating: 5.0, type: "오늘의메뉴A", menu: "오늘의메뉴A" },
+    { id: 1, title: "무난하게 맛있음", name: "학식마스터", content: "무난하게 맛있음 다음에는 다른 메뉴도 먹어봐야겠음", starRating: 4.5, type: "파스타", menu: "알리오올리오" , time:'1시간 전'},
+    { id: 2, title: "맛있다옹", name: "미돼고지", content: "맛있다옹", starRating: 3.0, type: "군산카츠", menu: "돈카츠덮밥" , time: '2시간 전'},
+    { id: 3, title: "좀 짰어요 그래도 맛은 있음", name: "나는아직배고프다", content: "좀 짰어요 그래도 맛은 있음", starRating: 5.0, type: "오늘의메뉴A", menu: "오늘의메뉴A", time: '3시간 전'},
   ];
 
   // 주어진 ID와 일치하는 리뷰를 찾아 반환하는 함수
@@ -54,6 +54,7 @@ function ReviewDetail() {
         <h3 className="review-name">{review.name}</h3>
         <p className="type">종류: {review.type}</p>
         <p className="menu">메뉴: {review.menu}</p>
+        <p className="time">{review.time}</p>
         <div className="star-rating">
           <img className="star-icon" src={star} alt="Star" />
           <span>{review.starRating}</span>

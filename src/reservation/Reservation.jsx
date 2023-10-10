@@ -11,6 +11,8 @@ function Reservation() {
 
   // 의자선택모달
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedTable, setSelectedTable] = useState("");
+  const [selectedChair, setSelectedChair] = useState("");
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -25,6 +27,13 @@ function Reservation() {
   // 사용자가 드롭다운을 선택할 때마다 호출되는 함수
   const handleDropdownChange = (e) => {
     setSelectedOption(e.target.value);
+  };
+
+  // 의자 클릭 이벤트 핸들러
+  const handleChairClick = (tableLabel, chairNumber) => {
+    setSelectedTable(tableLabel);
+    setSelectedChair(chairNumber);
+    openModal();
   };
 
   // 선택된 옵션이 변경될 때마다 페이지 이동
@@ -42,33 +51,24 @@ function Reservation() {
   // 테이블, 의자 배치
   const tables = [];
   for (let i = 0; i < 6; i++) {
+    const tableLabel = tableLabels[i];
+    const chairs = [];
+
+    for (let j = 1; j <= 4; j++) {
+      chairs.push(
+        <div key={j} className="chair" onClick={() => handleChairClick(tableLabel, j)}>
+          <div className="chair-seat">
+            <span>{j}</span>
+          </div>
+        </div>
+      );
+    }
+
     tables.push(
       <div key={i} className="table">
-        <div className="table-text">{tableLabels[i]}</div>
-        <div className="table-top-chairs">
-          <div className="chair" onClick={openModal}>
-            <div className="chair-seat">
-              <span>1</span>
-            </div>
-          </div>
-          <div className="chair" onClick={openModal}>
-            <div className="chair-seat">
-              <span>2</span>
-            </div>
-          </div>
-        </div>
-        <div className="table-bottom-chairs">
-          <div className="chair" onClick={openModal}>
-            <div className="chair-seat">
-              <span>3</span>
-            </div>
-          </div>
-          <div className="chair" onClick={openModal}>
-            <div className="chair-seat">
-              <span>4</span>
-            </div>
-          </div>
-        </div>
+        <div className="table-text">{tableLabel}</div>
+        <div className="table-top-chairs">{chairs.slice(0, 2)}</div>
+        <div className="table-bottom-chairs">{chairs.slice(2)}</div>
       </div>
     );
   }
@@ -100,7 +100,7 @@ function Reservation() {
       </div>
 
       {/* 모달 렌더링 */}
-      <ResModal isOpen={modalIsOpen} closeModal={closeModal} content="1인석 모달" />
+      <ResModal isOpen={modalIsOpen} closeModal={closeModal} content={`${selectedTable}-${selectedChair}`} />
 
       {/* 테이블 렌더링 */}
       <div className="tables-container-box">

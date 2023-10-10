@@ -44,7 +44,7 @@ function Header({ logoText }) {
                 <div className="cart-button">
                   <Link to="/cart">
                     {Cart}
-                    <img src={CartIcon} alt="Cart" />
+                    <img src={CartIcon} className="header-cart-button-icon" alt="Cart" />
                   </Link>
                 </div>
               </div>
@@ -55,7 +55,7 @@ function Header({ logoText }) {
               <div className="list" onBlur={handleBlurContainer}>
                 {/* 메뉴 드롭다운_onBlur 사용 */}
                 <button className="list-button" onClick={handleClickContainer}>
-                  <img src={ListIcon} alt="List" />
+                  <img src={ListIcon} className="header-list-button-icon" alt="List" />
                   {isDropdownView && <Dropdown />}
                 </button>
               </div>
