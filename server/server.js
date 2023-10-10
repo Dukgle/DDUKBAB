@@ -95,6 +95,7 @@ app.use(
     allowedHeaders: "Content-Type,Authorization,Accept",
     preflightContinue: false,
     optionsSuccessStatus: 204,
+    allowedHosts: ["ddukbab.netlify.app", "ddukbab-160bd6fc13f3.herokuapp.com"],
   })
 );
 
