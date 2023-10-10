@@ -2,6 +2,7 @@ import "./App.css";
 import styled from "styled-components";
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes, Switch, Link, RouterProvider } from "react-router-dom";
+import axios from "axios";
 
 import Splash from "./verification/Splash";
 import Login from "./verification/Login";
@@ -164,6 +165,12 @@ import Frappe_Java from "./menu/cafePage/Frappe_Java";
 import Frappe_Cream from "./menu/cafePage/Frappe_Cream";
 import Frappe_Mint from "./menu/cafePage/Frappe_Mint";
 import Frappe_Caramel from "./menu/cafePage/Frappe_Caramel";
+
+const instance = axios.create({
+  baseURL: "https://ddukbab-160bd6fc13f3.herokuapp.com/",
+});
+
+window.api = instance;
 
 function App() {
   return (

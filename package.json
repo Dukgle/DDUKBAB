@@ -1,6 +1,7 @@
 {
-  "name": "front",
+  "name": "ddukbab",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -46,6 +47,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "https://ddukbab-160bd6fc13f3.herokuapp.com/",
   "eslintConfig": {
     "extends": [
       "react-app",

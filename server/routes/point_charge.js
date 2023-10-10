@@ -1,21 +1,46 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const port = process.env.PORT || 3000;
 const db = require('../config/dbConfig');
+const { pool, select } = require("../dbHeroku");
+
+function verifyToken(req, res, next) {
+  // 헤더에서 인증 토큰을 추출
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer 다음의 토큰값
+  // console.log(token)
+  if (!token) {
+    return res.status(401).json({ error: "인증 토큰이 없습니다" });
+  }
+
+  // 토큰 검증
+  jwt.verify(token, "your-secret-key", (err, decoded) => {
+    if (err) {
+      console.error(err);
+      return res.status(401).json({ error: "인증 토큰이 유효하지 않습니다" });
+    }
+
+    // 토큰에서 추출한 정보를 request 객체에 저장
+    req.userId = decoded.userId; // 예시: 사용자 ID
+    req.role = decoded.role; // 예시: 사용자 역할
+    next();
+  });
+}
 
 // CORS 설정 (개발 중에는 모든 도메인에서 요청을 허용해도 괜찮습니다)
-router.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    next();
+router.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
 // 아임포트 관련 설정 (이 부분은 실제 아임포트 계정 정보로 설정해야 합니다)
-const Iamport = require('iamport');
 const iamport = new Iamport({
-    impKey: '1713323658251555', // 아임포트 API 키
-    impSecret: 'HZUg9K01LoCyxxzG4z0NHiri25SvroSSdk2Nnu1J0jo4LabyDIT693uN2qZu2tc97yaeFGbHV1tjNThM' // 아임포트 API 시크릿 키
+  impKey: "1713323658251555", // 아임포트 API 키
+  impSecret: "HZUg9K01LoCyxxzG4z0NHiri25SvroSSdk2Nnu1J0jo4LabyDIT693uN2qZu2tc97yaeFGbHV1tjNThM", // 아임포트 API 시크릿 키
 });
+
 
 // 충전 API 엔드포인트
 router.post('/mypage/charge/point', (req, res) => {
@@ -55,10 +80,5 @@ router.post('/mypage/charge/point', (req, res) => {
         }
     });
 });
-
-// 서버 시작
-//router.listen(port, () => {
-//    console.log(`Server is running on port ${port}`);
-//});
 
 module.exports = router;
