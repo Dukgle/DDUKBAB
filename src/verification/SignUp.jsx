@@ -36,7 +36,7 @@ function SignUp() {
 
     try {
       const response = await axios.post(
-        "/signup",
+        "/api/signup",
         {
           username: name,
           uni_num: number,
