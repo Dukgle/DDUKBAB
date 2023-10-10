@@ -24,10 +24,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// 허용 가능한 호스트를 설정
+const allowedHosts = ["https://ddukbab.netlify.app", "https://ddukbab-160bd6fc13f3.herokuapp.com"];
+
 // CORS 설정
 app.use(
   cors({
-    origin: ["https://ddukbab.netlify.app", "https://ddukbab-160bd6fc13f3.herokuapp.com"],
+    origin: function (origin, callback) {
+      if (!origin || allowedHosts.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
