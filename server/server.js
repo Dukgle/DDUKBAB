@@ -95,6 +95,9 @@ app.use(
   })
 );
 
+// 프리플라이트 요청에 대한 응답을 처리하기 위한 미들웨어 추가
+app.options("*", cors());
+
 // API 라우트 추가
 app.use("/api", users);
 app.use("/api/users", user_change);
