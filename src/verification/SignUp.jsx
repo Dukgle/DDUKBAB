@@ -46,6 +46,7 @@ function SignUp() {
         },
         {
           mode: "cors",
+          credentials: "include",
         }
       );
       console.log("회원가입 성공", response.data);
