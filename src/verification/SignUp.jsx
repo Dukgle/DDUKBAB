@@ -36,7 +36,7 @@ function SignUp() {
 
     try {
       const response = await axios.post(
-        "/api/signup",
+        "https://ddukbab-160bd6fc13f3.herokuapp.com/api/signup",
         {
           username: name,
           uni_num: number,
