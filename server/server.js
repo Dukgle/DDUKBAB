@@ -2,6 +2,7 @@ import cors from "koa2-cors";
 
 const express = require("express");
 // const cors = require("cors");
+const cors = require("koa2-cors");
 const path = require("path");
 
 const bodyParser = require("body-parser");
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // CORS 설정
 const corsOptions = {
   origin: "https://ddukbab.netlify.app",
+  credentials: true, // 필요한 경우 설정 (쿠키 및 기타 인증 정보를 전송하기 위함)
   optionsSuccessStatus: 200,
 };
 
