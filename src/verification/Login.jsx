@@ -22,10 +22,17 @@ function Login() {
 
   const Login = async (e) => {
     try {
-      const response = await axios.post("/api/login", {
-        uni_num: number,
-        password: password,
-      });
+      const response = await axios.post(
+        "/api/login",
+        {
+          uni_num: number,
+          password: password,
+        },
+        {
+          mode: "cors",
+          credentials: "include",
+        }
+      );
 
       const { token } = response.data;
 
