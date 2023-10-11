@@ -21,6 +21,16 @@ const saler_menu = require("./routes/saler/menu");
 const app = express();
 
 // CORS 설정
+app.use(
+  cors({
+    origin: ["https://ddukbab.netlify.app", "https://ddukbab-160bd6fc13f3.herokuapp.com"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type,Authorization,Accept",
+    credentials: true,
+    optionsSuccessStatus: 204,
+  })
+);
+/*
 app.use((req, res, next) => {
   const allowedOrigins = ["https://ddukbab.netlify.app", "https://ddukbab-160bd6fc13f3.herokuapp.com"];
   const origin = req.headers.origin;
@@ -34,6 +44,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
 });
+*/
 
 // Body 파서 설정
 app.use(bodyParser.json());
