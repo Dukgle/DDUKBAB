@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../header/Header_verify";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import axios from "axios";
+import axios from "../axiosConfig";
 import Logo from "../icon/DDUKBAB.png";
 import Apple from "../icon/apple.png";
 import Cookies from "js-cookie";
