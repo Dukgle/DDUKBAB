@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../header/Header_verify";
 import "./SignUp.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../axiosConfig";
 import down from "../icon/arrow-down.png";
 import none from "../icon/circle-x.png";
 import check from "../icon/circle-check.png";
