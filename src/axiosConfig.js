@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  //   baseURL: "process.env.REACT_APP_API_URL", // 백엔드 주소 설정
+  baseURL: "", // baseURL을 비워두세요
   withCredentials: true, // CORS 요청에 필요한 옵션
 });
 
