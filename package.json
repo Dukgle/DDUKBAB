@@ -41,10 +41,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node --max-old-space-size=512 node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "node --max-old-space-size=512 node_modules/react-scripts/bin/react-scripts.js build",
-    "test": "node --max-old-space-size=512 node_modules/react-scripts/bin/react-scripts.js test",
-    "eject": "node --max-old-space-size=512 node_modules/react-scripts/bin/react-scripts.js eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "proxy": "https://ddukbab-160bd6fc13f3.herokuapp.com/",
   "eslintConfig": {
